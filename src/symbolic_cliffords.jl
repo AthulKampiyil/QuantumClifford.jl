@@ -151,8 +151,8 @@ A "symbolic" general single-qubit operator which permits faster multiplication t
 ```jldoctest
 julia> op = SingleQubitOperator(2, true, true, true, false, true, true) # Tableau components and phases
 SingleQubitOperator on qubit 2
-X₁ ⟼ - Y
-Z₁ ⟼ - X
+X₂ ⟼ - Y
+Z₂ ⟼ - X
 
 julia> typeof(op)
 SingleQubitOperator
@@ -267,7 +267,7 @@ function Base.show(io::IO, op::AbstractSingleQubitOperator)
         print(io, "$(string(typeof(op)))($(op.q))")
     else
         print(io, "$(string(typeof(op))) on qubit $(op.q)\n")
-        show(io, CliffordOperator(op,1;compact=true))
+        show(IOContext(io, :qubit_labels => (op.q,)), CliffordOperator(op,1;compact=true))
     end
 end
 
@@ -448,7 +448,7 @@ function Base.show(io::IO, op::AbstractTwoQubitOperator)
         print(io, "$(string(typeof(op)))($(op.q1),$(op.q2))")
     else
         print(io, "$(string(typeof(op))) on qubit ($(op.q1),$(op.q2))\n")
-        show(io, CliffordOperator(op,2;compact=true))
+        show(IOContext(io, :qubit_labels => (op.q1, op.q2)), CliffordOperator(op,2;compact=true))
     end
 end
 
